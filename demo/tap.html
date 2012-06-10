@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>gesture demo</title>
+	<link rel="stylesheet" href="styles.css"></link>
+</head>
+<body>
+	<h1>gesture demo - tap</h1>
+	<div id="stage">
+		<div id="plane">
+			<span class="r"></span>
+			<span class="g"></span>
+			<span class="b"></span>
+			<span class="o"></span>
+			<span class="y"></span>
+			<span class="w"></span>
+		</div>
+	</div>
+	
+	<script type="text/javascript" src="../source/gesture.js"></script>
+	<script type="text/javascript">
+		var degree = 30;
+		var target = document.getElementById('plane');
+		enableGestureEvents(target);
+		target.addEventListener('tap', function(e){
+			console.log('tap');
+			degree += 90;
+			target.style.webkitTransform = 'rotateY(' + degree + 'deg)';
+		}, false);
+	</script>
+</body>
+</html>
