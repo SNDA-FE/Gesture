@@ -29,7 +29,6 @@
 		enableGestureEvents(target);
 		target.addEventListener('tap', function(e) {
 			e.preventDefault();
-			console.log('tap');
 			degree += 90;
 			target.style.webkitTransform = 'rotateY(' + degree + 'deg)';
 		}, false);
