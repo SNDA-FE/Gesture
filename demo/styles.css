@@ -13,7 +13,8 @@ html, body {
 #plane {
 	width: 200px;
 	height: 200px;
-	background: #39f;
+	background: -webkit-radial-gradient(center, closest-corner, #1a82f7, #2f2727);
+	box-shadow: 0 0 20px #000;
 	margin: 0 auto;
 	position: relative;
 	top: 50px;
