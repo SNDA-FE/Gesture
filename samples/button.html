@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Gesture.js示例</title>
+<script type="text/javascript" src="../source/gesture.js"></script>
+<style type="text/css">
+    html{
+        height:100%;
+        width:100%;
+        margin:0 0 0 0;
+    }
+    body {
+        height:100%;
+        width:100%;
+        margin:0 0 0 0;
+    }
+    #myele1 {
+        border:outset 4px silver;
+        text-align:center;
+        width:50em;
+        cursor:pointer;
+    }
+    #myele2 {
+        border:outset 4px silver;
+        text-align:center;
+        width:50em;
+        cursor:pointer;
+    }
+</style>
+</head>
+<body>
+    <div id="myele1">点我</div>
+    <div id="myele2">按我</div>
+
+<script type="text/javascript">
+    enableGestureEvents(document.querySelector("#myele1"));
+    enableGestureEvents(document.querySelector("#myele2"));
+    document.querySelector("#myele1").addEventListener("tap",function(){
+        alert("tap!")
+    },false);
+    document.querySelector("#myele2").addEventListener("press",function(){
+        alert("press!")
+    },false);
+</script>
+</body>
+</html>

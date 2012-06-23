@@ -175,9 +175,19 @@ function enableGestureEvents(ele) {
                     ev[p] = touch[p];
                 });
                 ele.dispatchEvent(ev);
-                if (Date.now() - gesture.startTime < 300) {
+                
+                var duration = Date.now() - gesture.startTime;
+                
+                if (duration < 300) {
                     var ev = document.createEvent('HTMLEvents');
                     ev.initEvent('flick', true, true);
+                    
+                    ev.duration = duration;
+                    ev.valocityX = (touch.clientX - gesture.startTouch.clientX )/duration;
+                    ev.valocityY = (touch.clientY - gesture.startTouch.clientY )/duration;
+                    ev.displacementX = touch.clientX - gesture.startTouch.clientX;
+                    ev.displacementY = touch.clientY - gesture.startTouch.clientY;
+                    
                     gestureEventProperties.forEach(function (p) {
                         ev[p] = touch[p];
                     });

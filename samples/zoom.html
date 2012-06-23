@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Gesture.jsÊ¾Àý</title>
+<script type="text/javascript" src="../source/gesture.js"></script></head>
+<body ontouchmove="event.preventDefault();" style="background:url(bg.png) repeat left top;margin:0 0 0 0;">
+	<div id="origin" style="position:relative;width:300px;height:300px;background:red;-webkit-transform-origin:0 0;">a</div>
+
+<script>
+document.body.onselectstart = function (e) {
+    e.preventDefault();
+    return false;
+};
+var origin = document.querySelector("#origin");
+enableGestureEvents(origin,false);
+
+var matrix;
+
+var i = 0;
+origin.addEventListener("dualtouchstart",function(e){    matrix = window.getComputedStyle(origin).webkitTransform;    if(matrix == "none")    {        origin.style.webkitTransform = "scale(1)";        matrix = window.getComputedStyle(origin).webkitTransform;    }    console.log(matrix);},false);
+origin.addEventListener("dualtouch",function(e){    origin.style.webkitTransform = " matrix("+e.scale+",0,0,"+e.scale+","+e.translate[0].toFixed(1)+","+e.translate[1].toFixed(1)+") "+ matrix;},false);
+
+</script>
+</body>
+</html>
