@@ -1,49 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8" />
-	<meta http-equiv="cleartype" content="on" />
-	<meta name="HandheldFriendly" content="True" />
-	<meta name="MobileOptimized" content="320" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-	<title>gesture demo</title>
-	<style>
-		html, body {
-			font-family: Arial, sans-serif;
-			line-height: 1.5;
-			font-size: 16px;
-			color: #000;
-		}
-		#stage {
-			width: 100%;
-			height: 200px;
-		}
-		#plane {
-			width: 200px;
-			height: 200px;
-			background: #39f;
-			margin: 0 auto;
-			position: relative;
-			top: 50px;
-			-webkit-transition: -webkit-transform 500ms ease-in-out;
-		}
-	</style>
+    <meta charset="utf-8" />
+    <meta http-equiv="cleartype" content="on" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>gesture demo</title>
+    <style>
+        html, body {
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            font-size: 16px;
+            color: #000;
+        }
+        #stage {
+            width: 100%;
+            height: 200px;
+        }
+        #plane {
+            width: 200px;
+            height: 200px;
+            background: #39f;
+            margin: 0 auto;
+            position: relative;
+            top: 50px;
+            -webkit-transition: -webkit-transform 500ms ease-in-out;
+        }
+    </style>
 </head>
 <body>
-	<h1>gesture demo - press</h1>
-	<div id="stage">
-		<div id="plane"></div>
-	</div>	
-	<script type="text/javascript" src="../source/gesture.js"></script>
-	<script type="text/javascript">
-		var degree = 0;
-		var target = document.getElementById('plane');
-		enableGestureEvents(target);
-		target.addEventListener('press', function(e) {
-			e.preventDefault();
-			degree += 90;
-			target.style.webkitTransform = 'rotateZ(' + degree + 'deg)';
-		}, false);
-	</script>
+    <h1>gesture demo - press</h1>
+    <div id="stage">
+        <div id="plane"></div>
+    </div>    
+    <script type="text/javascript" src="../source/gesture.js"></script>
+    <script type="text/javascript">
+        var degree = 0;
+        var target = document.getElementById('plane');
+        enableGestureEvents(target);
+        target.addEventListener('press', function(e) {
+            e.preventDefault();
+            degree += 90;
+            target.style.webkitTransform = 'rotateZ(' + degree + 'deg)';
+        }, false);
+    </script>
 </body>
 </html>
