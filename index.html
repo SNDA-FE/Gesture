@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Gesture.js by SNDA-FE</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Gesture.js</h1>
+        <p>支持触屏手势JS库</p>
+
+        <p class="view"><a href="https://github.com/SNDA-FE/Gesture">View the Project on GitHub <small>SNDA-FE/Gesture</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/SNDA-FE/Gesture/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/SNDA-FE/Gesture/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/SNDA-FE/Gesture">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>Gesture.js</h1>
+
+<h2>Gesture.js是什么？</h2>
+
+<p>Gesture.js是一个轻量级的，专为支持移动触屏设备的手势操作而设计的库。任何遵守W3C的Touch事件规范的Web浏览器环境都可以使用它。 到目前为止，所有单点触摸事件（pan，tap，press，flick）都能够在绝大多数Android设备上使用（包括浏览器和一些hybrid环境）；ios4.0及更高版本中的safari中，可以使用双指事件dualtouch。 </p>
+
+<p>Gesture.js使用MIT开源协议发布，在源代码中包含协议的全文。</p>
+
+<h2>为何要使用Gesture.js</h2>
+
+<p>在移动触屏设备上，想要基于W3C的标准touch事件来开发Web应用是非常困难的，比如，假定有一个列表，用户拖动它和点击其中某一列表项时都会产生一组"touchstart-touchmove-touchend"事件，在JS代码中想要区分用户的真实意图十分困难。</p>
+
+<p>使用Gesture.js可以解决这些问题。我们研究了很多手机原生应用的交互，从中提取了最为常用的几个手势，并且在touch事件的基础上封装成了几个手势事件，使用这些事件就可以在Web应用中开发出接近原生应用的交互效果。</p>
+
+<h2>如何使用Gesture.js</h2>
+
+<p>首先你必须在页面上引用gesture.js文件。</p>
+
+<pre>&lt;script type="text/javascript" src="gesture.js"&gt;&lt;/script&gt;  </pre>
+
+<p>选择一个DOM元素，调用enableGestureEvents： </p>
+
+<pre>&lt;script type="text/javascript" src="gesture.js"&gt;
+    enableGestureEvents(document.querySelector("#myele"));
+&lt;/script&gt;  </pre>
+
+<p>之后就可以像原生的事件一样监听Gesture事件了：</p>
+
+<pre>&lt;script type="text/javascript"&gt;
+    enableGestureEvents(document.querySelector("#myele"));
+    document.querySelector("#myele").addEventListener("tap",function(){
+        //do something
+    },false);
+&lt;/script&gt;</pre>
+
+<p>Gesture事件皆发生在冒泡阶段，addEventListener第三个参数是无效的。</p>
+
+<p>完整代码如下：</p>
+
+<pre>
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8" /&gt;
+&lt;title&gt;Gesture.js示例&lt;/title&gt;
+&lt;script type="text/javascript" src="gesture.js"&gt;&lt;/script&gt;  
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id="myele" style="width:50px;height:50px"&gt;点我&lt;/div&gt;
+&lt;script type="text/javascript" src="gesture.js"&gt;
+
+    enableGestureEvents(document.querySelector("#myele"));
+
+    document.querySelector("#myele").addEventListener("tap",function(){
+        //do something
+    },false);
+
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/SNDA-FE">SNDA-FE</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
