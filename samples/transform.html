@@ -1,56 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Gesture.jsÊ¾Àý</title>
+<script type="text/javascript" src="../source/gesture.js"></script>
+</head>
+<body ontouchmove="event.preventDefault();" style="background:url(bg.png) repeat left top;margin:0 0 0 0;">
+    <div id="origin" style="position:relative;width:300px;height:300px;background:red;-webkit-transform-origin:0 0;">a</div>
 
-<script src="namespace.js"></script>
-<script src="Gesture.js"></script>
-<script src="Matrix2D.js"></script>
-<body ontouchmove="event.preventDefault();" style="background:url(bg.png) repeat left top;margin:0 0 0 0;">
-
-    <div id="origin" style="position:relative;width:300px;height:300px;background:red;-webkit-transform-origin:0 0;">a</div>
-    <pre id="console"></pre>
-</body>
-<script>
-    document.body.onselectstart = function (e) {
-        e.preventDefault();
-        return false;
-    }
-window.console = {
-    log:function(text){
-        document.getElementById('console').innerText = text +"\n" +document.getElementById('console').innerText ;
-    }
-}/*
-var origin = document.querySelector("#origin");
-vision.gesture.enableGestureEvents(origin,false);
-
-var matrix = new vision.util.Matrix2D();
-
-var i = 0;
-origin.addEventListener("pan",function(e){
-//console.log("pan" + [e.displacementX, e.displacementY]);
-},false)
-origin.addEventListener("panend", function (e) {
-//console.log("panend");
-}, false)
-origin.addEventListener("press", function (e) {
-console.log("press");
-}, false)
-origin.addEventListener("pressend", function (e) {
-console.log("pressend");
-}, false)
-origin.addEventListener("tap", function (e) {
-console.log("tap");
-}, false)
-*/
-var origin = document.querySelector("#origin");
-vision.gesture.enableGestureEvents(origin,false);
-
-var matrix = new vision.util.Matrix2D();
-
-var i = 0;
-origin.addEventListener("dualtouchstart",function(e){
-matrix.parseTransformString(window.getComputedStyle(origin).webkitTransform);
-console.log(matrix);
-},false)
-origin.addEventListener("dualtouch",function(e){
-origin.style.webkitTransform = new vision.util.Matrix2D(e.matrix).mul(matrix).toTransformString();
-},false)
-
+
+<script>
+
+document.body.onselectstart = function (e) {
+    e.preventDefault();
+    return false;
+};
+
+var origin = document.querySelector("#origin");
+enableGestureEvents(origin,false);
+
+
+
+var matrix;
+
+
+
+var i = 0;
+
+origin.addEventListener("dualtouchstart",function(e){
+    matrix = window.getComputedStyle(origin).webkitTransform;
+    if(matrix == "none")
+    {
+        origin.style.webkitTransform = "scale(1)";
+        matrix = window.getComputedStyle(origin).webkitTransform;
+    }
+},false);
+
+origin.addEventListener("dualtouch",function(e){
+    origin.style.webkitTransform = " matrix("+e.matrix[0][0]+","+e.matrix[1][0]+","+e.matrix[0][1]+","+e.matrix[1][1]+","+e.matrix[0][2]+","+e.matrix[1][2]+") "+ matrix;
+},false);
+
+
 </script>
+</body>
+</html>

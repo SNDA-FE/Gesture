@@ -16,8 +16,6 @@ var origin = document.querySelector("#origin");
 enableGestureEvents(origin,false);
 
 var matrix;
-
-var i = 0;
 origin.addEventListener("dualtouchstart",function(e){    matrix = window.getComputedStyle(origin).webkitTransform;    if(matrix == "none")    {        origin.style.webkitTransform = "scale(1)";        matrix = window.getComputedStyle(origin).webkitTransform;    }    console.log(matrix);},false);
 origin.addEventListener("dualtouch",function(e){    origin.style.webkitTransform = " matrix("+e.scale+",0,0,"+e.scale+","+e.translate[0].toFixed(1)+","+e.translate[1].toFixed(1)+") "+ matrix;},false);
 </script>
