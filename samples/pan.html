@@ -1,47 +1,68 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8" />
-<title>Gesture.js示例</title>
-<script type="text/javascript" src="../source/gesture.js"></script>
-<style type="text/css">
-    html{
-        height:100%;
-        width:100%;
-        margin:0 0 0 0;
-    }
-    body {
-        height:100%;
-        width:100%;
-        margin:0 0 0 0;
-    }
-    #myele {
-        border:outset 4px silver;
-        text-align:center;
-        width:50px;
-        height:50px;
-        line-height:50px;
-        cursor:pointer;
-    }
-
-</style>
+	<meta charset="utf-8" />
+	<meta http-equiv="cleartype" content="on" />
+	<meta name="HandheldFriendly" content="True" />
+	<meta name="MobileOptimized" content="320" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>gesture demo</title>
+	<style>
+		html, body {
+			font-family: Arial, sans-serif;
+			line-height: 1.5;
+			font-size: 16px;
+			color: #000;
+		}
+		#stage {
+			width: 300px;
+			height: 80px;
+			border: 2px solid #000;
+			position: relative;
+			background: #f0f0f0;
+		}
+		#plane {
+			width: 80px;
+			height: 80px;
+			background: #39f;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+	</style>
 </head>
 <body>
-    <div id="myele" style="position:absolute;top:0px;left:0px;">拖我</div>
-
-<script type="text/javascript">
-    var myele = document.querySelector("#myele")
-    enableGestureEvents(myele );
-
-    var baseX = 0, baseY = 0;
-    myele.addEventListener("panstart",function(e){
-        baseY = parseFloat(myele.style.left);
-        baseX = parseFloat(myele.style.top);
-    },false);
-    myele.addEventListener("pan",function(e){
-        myele.style.top = baseY + e.displacementY + "px";
-        myele.style.left = baseX + e.displacementX + "px";
-    },false);
-</script>
+	<h1>gesture demo - pan</h1>
+	<div id="stage">
+		<div id="plane"></div>
+	</div>
+	<script type="text/javascript" src="../source/gesture.js"></script>
+	<script type="text/javascript">
+		var base;
+		var target = document.getElementById('plane');
+		enableGestureEvents(target);
+		target.addEventListener('panstart', function(e) {
+			base = parseInt(target.style.left);
+			if(isNaN(base)) {
+				base = 0;
+			}
+		}, false);
+		target.addEventListener('panend', function(e) {
+			target.style.background = '#39f';
+		}, false);
+		target.addEventListener('pan', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			target.style.background = '#f60';
+			var pos = base + e.displacementX;
+			if(pos > 220) {
+				target.style.left = '220px';
+			} else if(pos < 0) {
+				target.style.left = '0px';
+			} else {
+				target.style.left = pos + 'px';
+			}
+		}, false);
+	</script>
 </body>
 </html>

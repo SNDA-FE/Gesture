@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Gesture.js示例</title>
+<script type="text/javascript" src="../source/gesture.js"></script>
+<style type="text/css">
+    html{
+        height:100%;
+        width:100%;
+        margin:0 0 0 0;
+    }
+    body {
+        height:100%;
+        width:100%;
+        margin:0 0 0 0;
+    }
+    #myele {
+        border:outset 4px silver;
+        text-align:center;
+        width:50px;
+        height:50px;
+        line-height:50px;
+        cursor:pointer;
+    }
+
+</style>
+</head>
+<body>
+    <div id="myele" style="position:absolute;top:0px;left:0px;">拖我</div>
+
+<script type="text/javascript">
+    var myele = document.querySelector("#myele")
+    enableGestureEvents(myele );
+
+    var baseX = 0, baseY = 0;
+    myele.addEventListener("panstart",function(e){
+        baseY = parseFloat(myele.style.left);
+        baseX = parseFloat(myele.style.top);
+    },false);
+    myele.addEventListener("pan",function(e){
+        myele.style.top = baseY + e.displacementY + "px";
+        myele.style.left = baseX + e.displacementX + "px";
+    },false);
+</script>
+</body>
+</html>

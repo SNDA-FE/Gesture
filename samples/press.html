@@ -15,37 +15,34 @@
 			color: #000;
 		}
 		#stage {
-			width: 300px;
-			height: 80px;
-			border: 2px solid #000;
-			position: relative;
-			background: #f0f0f0;
+			width: 100%;
+			height: 200px;
 		}
 		#plane {
-			width: 80px;
-			height: 80px;
+			width: 200px;
+			height: 200px;
 			background: #39f;
-			position: absolute;
-			top: 0;
-			left: 0;
-			-webkit-transition: left 300ms ease-in-out;
+			margin: 0 auto;
+			position: relative;
+			top: 50px;
+			-webkit-transition: -webkit-transform 500ms ease-in-out;
 		}
 	</style>
 </head>
 <body>
-	<h1>gesture demo - flick</h1>
+	<h1>gesture demo - press</h1>
 	<div id="stage">
 		<div id="plane"></div>
 	</div>	
 	<script type="text/javascript" src="../source/gesture.js"></script>
 	<script type="text/javascript">
-		var pos = true;
+		var degree = 0;
 		var target = document.getElementById('plane');
 		enableGestureEvents(target);
-		target.addEventListener('flick', function(e) {
+		target.addEventListener('press', function(e) {
 			e.preventDefault();
-			target.style.left = pos ? '220px' : '0px';
-			pos = !pos;
+			degree += 90;
+			target.style.webkitTransform = 'rotateZ(' + degree + 'deg)';
 		}, false);
 	</script>
 </body>
