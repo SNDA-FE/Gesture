@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8" />
@@ -64,7 +64,7 @@
         选择一个DOM元素，调用enableGestureEvents：
     </p>
     <pre>
-&lt;script type=&quot;text/javascript&quot; src=&quot;gesture.js&quot;&gt;
+&lt;script type=&quot;text/javascript&quot; &gt;
     enableGestureEvents(document.querySelector(&quot;#myele&quot;));
 &lt;/script&gt;  </pre>
     <p>
@@ -90,7 +90,7 @@
 &lt;/head>
 &lt;body>
 &lt;div id=&quot;myele&quot; style=&quot;width:50px;height:50px&quot;>点我&lt;/div>
-&lt;script type=&quot;text/javascript&quot; src=&quot;gesture.js&quot;>
+&lt;script type=&quot;text/javascript&quot;>
 
     enableGestureEvents(document.querySelector(&quot;#myele&quot;));
 
@@ -158,7 +158,8 @@ myele.addEventListener(&quot;pan&quot;,function(e){
 myele.style.webkitTransform = &quot;translate(&quot; + e.translate + &quot;) &quot;+scale(&quot; + e.scale+ &quot;)&quot;</pre>
     <p>实际代码中，可能需要使用getComputedStyle来获取元素原本的transform进行叠加，所以通常可以在dualtouchstart事件中做此事。</p>
     <pre>//假定myele是某一DOM元素
-var matrix;
+var matrix;
+
 myele.addEventListener("dualtouchstart",function(e){
     matrix = window.getComputedStyle(origin).webkitTransform;
     if(matrix == "none")
