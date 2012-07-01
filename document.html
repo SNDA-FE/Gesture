@@ -1,0 +1,584 @@
+﻿<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Gesture.js by SNDA-FE</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <style type="text/css">
+    pre {
+        border: solid 1px #ABCDF3;
+        background: rgb(247,250,254);
+        padding:1em 1em 1em 1em;
+    }
+
+    header a
+    {
+    	display:block;
+    	margin:0.5em 0em 0.5em 0em;
+    }
+    header input
+    {
+    	display:block;
+    	border: solid 1px #ABCDF3;
+  	
+    }
+    .hidden 
+    {
+    	display:none;
+    }
+    .opacity 
+    {
+    	opacity:0.2;
+    }
+    </style>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Gesture.js</h1>
+        <p>支持触屏手势JS库</p>
+        <script type="text/javascript">
+            function match() {
+                var txt = document.querySelector('#srchbox').value;
+
+                Array.prototype.forEach.call(document.querySelectorAll('#index a'), function (e) {
+
+                    if (e.classList.contains(filter) && e.innerHTML.match(new RegExp(txt.replace(/([\^\$\\\.\*\+\?\(\)\[\]\{\}\|])/g, "\\$1")))) {
+                        e.style.display = "block";
+                    }
+                    else e.style.display = "none";
+                })
+
+            }
+            var filter = "reference"; 
+        </script>
+        <h3><a href="javascript:filter='toturial';match();void 0;" style="display:inline;">教程</a> <a href="javascript:filter='reference';match();void 0;" style="display:inline;">参考</a></h3>
+        <input id="srchbox" oninput="match();" />
+        <div id="index" style="overflow-y:scroll;height:10em;">
+            
+            <a href="#1" class="toturial">Gesture.js是什么？</a>
+            <a href="#2" class="toturial">为何要使用Gesture.js</a>
+            <a href="#3" class="toturial">如何使用Gesture.js</a>
+            <a href="#4" class="toturial">监听tap和press事件</a>
+            <a href="#5" class="toturial">利用pan来改变元素的位置</a>
+            <a href="#6" class="toturial">监听flick事件编写加速动画</a>
+            <a href="#7" class="toturial">使用双指事件来做图形变换</a>
+            <a href="#8" class="reference">enableGestureEvents</a>
+            <a href="#9" class="reference">平移(pan)</a>
+            <a href="#10" class="reference">平移开始(panstart)</a>
+            <a href="#11" class="reference">平移结束(panend)</a>
+            <a href="#12" class="reference">拂动(flick)</a>
+            <a href="#13" class="reference">点(tap)</a>
+            <a href="#14" class="reference">双点击(doubletap)</a>
+            <a href="#15" class="reference">按(press)</a>
+            <a href="#16" class="reference">按结束(pressend)</a>
+            <a href="#17" class="reference">双指触摸(dualtouch)</a>
+            <a href="#18" class="reference">双指触摸开始(dualtouchstart)</a>
+        </div>
+        <script type="text/javascript">
+             match();
+        </script>
+        <p class="view"><a href="https://github.com/SNDA-FE/Gesture">在GitHub查看项目 <small>SNDA-FE/Gesture</small></a></p>
+
+
+
+        <ul>
+          <li><a href="https://github.com/SNDA-FE/Gesture/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/SNDA-FE/Gesture/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/SNDA-FE/Gesture">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+<section id="toturial">
+    <h3><a name="1">Gesture.js是什么？</a></h3>
+    <p>
+                Gesture.js是一个轻量级的，专为支持移动触屏设备的手势操作而设计的库。任何遵守W3C的Touch事件规范的Web浏览器环境都可以使用它。 
+        到目前为止，所有单点触摸事件（pan，tap，press，flick）都能够在绝大多数Android设备上使用（包括浏览器和一些hybrid环境）；ios4.0及更高版本中的safari中，可以使用双指事件dualtouch。
+    </p>
+<p>
+                Gesture.js使用MIT开源协议发布，在源代码中包含协议的全文。</p>
+    <h3><a name="2">为何要使用Gesture.js</a></h3>
+    <p>
+        在移动触屏设备上，想要基于W3C的标准touch事件来开发Web应用是非常困难的，比如，假定有一个列表，用户拖动它和点击其中某一列表项时都会产生一组&quot;touchstart-touchmove-touchend&quot;事件，在JS代码中想要区分用户的真实意图十分困难。<p>
+        使用Gesture.js可以解决这些问题。我们研究了很多手机原生应用的交互，从中提取了最为常用的几个手势，并且在touch事件的基础上封装成了几个手势事件，使用这些事件就可以在Web应用中开发出接近原生应用的交互效果。</p>
+    <h3><a name="3">如何使用Gesture.js</a></h3>
+    <p>
+        首先你必须在页面上引用gesture.js文件。 
+    </p>
+    <pre>
+&lt;script type=&quot;text/javascript&quot; src=&quot;gesture.js&quot;&gt;&lt;/script&gt;  </pre>
+    <p>
+        选择一个DOM元素，调用enableGestureEvents：
+    </p>
+    <pre>
+&lt;script type=&quot;text/javascript&quot; &gt;
+    enableGestureEvents(document.querySelector(&quot;#myele&quot;));
+&lt;/script&gt;  </pre>
+    <p>
+        之后就可以像原生的事件一样监听Gesture事件了：</p>
+    <pre>
+&lt;script type=&quot;text/javascript&quot;&gt;
+    enableGestureEvents(document.querySelector(&quot;#myele&quot;));
+    document.querySelector(&quot;#myele&quot;).addEventListener(&quot;tap&quot;,function(){
+        //do something
+    },false);
+&lt;/script&gt;</pre>
+    <p>
+        Gesture事件皆发生在冒泡阶段，addEventListener第三个参数是无效的。</p>
+<p>
+        完整代码如下：</p>
+
+    <pre>
+&lt;html>
+&lt;head>
+&lt;meta charset=&quot;UTF-8&quot; />
+&lt;title&gt;Gesture.js示例&lt;/title>
+&lt;script type=&quot;text/javascript&quot; src=&quot;gesture.js&quot;>&lt;/script>  
+&lt;/head>
+&lt;body>
+&lt;div id=&quot;myele&quot; style=&quot;width:50px;height:50px&quot;>点我&lt;/div>
+&lt;script type=&quot;text/javascript&quot;>
+
+    enableGestureEvents(document.querySelector(&quot;#myele&quot;));
+
+    document.querySelector(&quot;#myele&quot;).addEventListener(&quot;tap&quot;,function(){
+        //do something
+    },false);
+
+&lt;/script>
+&lt;/body>
+&lt;/html></pre>
+    <h3><a name="4">tap和press事件</a></h3>
+    <p>tap是手指点触事件。tap的触发过程是手指轻点触屏并迅速离开。</p>
+    <p>手指长按触屏，将会得到press事件，当手指在触屏表面停留时间超过0.5秒时会触发press事件，触发press事件后，手指再离开触屏则会得到pressend。</p>
+    <p>这两个事件经常用于按钮形状的UI组件。</p>
+    <p>tap和press是互斥的，也就是说，触发press事件之后，手指离开触屏时将不再触发tap。</p>
+    <pre>myele.addEventListener(&quot;tap&quot;,function(){
+    //do something
+},false);
+myele.addEventListener(&quot;press&quot;,function(){
+    //do something else
+},false);</pre>
+    <h3><a name="5">利用pan来改变元素的位置</a></h3>
+    <p>pan/pan/panstart/panend 
+        是一组响应手指在触屏上滑动的事件。与原生的touchstart/touchmove/touchend不同，只有当用户意图明显地移动手指时才会触发pan序列的事件，它和tap也是互斥的。这意味着开发者可以利用pan和tap来区分用户的真实意图。</p>
+    <p>pan事件常常用来拖拽改变元素的位置，pan事件的参数中displacementX和displacementY可以为此提供帮助。</p>
+    <p>displacementX和displacementY表示用户手指从pan开始在触屏上移动的距离，拖拽元素时，只要给元素的起始位置加上这两个值就可以实现类似拖拽的效果，请看下面代码段：</p>
+    <pre> var baseX = 0, baseY = 0;
+
+//假设myele是某一DOM元素
+myele.addEventListener(&quot;panstart&quot;,function(e){
+    baseY = parseFloat(myele.style.left);
+    baseX = parseFloat(myele.style.top);
+},false);
+
+myele.addEventListener(&quot;pan&quot;,function(e){
+    myele.style.top = baseY + e.displacementY + &quot;px&quot;;
+    myele.style.left = baseX + e.displacementX + &quot;px&quot;;
+},false);
+</pre>
+    <p>pan在也常用于滚动和切换场景。因为ios5.0之前的safari不支持元素内的滚动条，所以有时需要用pan和transform来模拟。</p>
+    <h3><a name="6">监听flick事件编写加速动画</a></h3>
+<p>flick事件是用手指快速在屏幕划过。</p>
+<p>flick与pan事件是<strong>不互斥</strong>的。可以认为，flick发生之前，一定会发生pan事件。</p>
+<p>与pan事件不同，flick是时间敏感的，只有当手指在触摸屏上停留的时间足够短，才会触发flick事件。</p>
+<p>flick事件的参数与速度有关：</p>
+<p>valocityX和valocityY是手指划动速度的x方向和y方向的值</p>
+<p>duration是手指停留在触屏的时间。</p>
+<p>flick事件的参数与时间相关，所以可以用来实现物理效果的动画。</p>
+    <pre>myele.addEventListener(&quot;flick&quot;,function(e){
+    //利用valocityX和valocityY来计算动画
+},false);</pre>
+<p>多数模拟运动的规律都是匀加速/减速运动，所以往往需要用贝塞尔曲线模拟二次曲线，以下函数可以用[0,1]区间上的三次贝塞尔曲线拟合抛物线y=x²上[a,b]之间的一段：</p>
+    <pre> function quadratic2cubicBezier(a, b) {
+    return [[(a / 3 + (a + b) / 3 - a) / (b - a), (a * a / 3 + a * b * 2 / 3 - a * a) / (b * b - a * a)],
+        [(b / 3 + (a + b) / 3 - a) / (b - a), (b * b / 3 + a * b * 2 / 3 - a * a) / (b * b - a * a)]];
+}</pre>
+    <h3><a name="7">使用双指事件来做图形变换</a></h3>
+<p>Gesture.js提供了双指手势的支持。但是到目前为止仅ios中的safari可以提供多于一个点的touch事件，所以双指手势事件仅能用于ios。</p>
+    <p>双指手势实际包含了strech, pinch, 
+        rotate,dualpan几种，但是因为实际使用中，这些手势常常是由同一个动作触发的，也经常会需要同时使用，所以gesture.js仅仅提供了一个双指事件dualtouch。</p>
+    <p>选择性忽略某些参数的话，dualtouch可以被当做仅仅缩放、旋转或者位移的事件来使用。</p>
+    <p>为了给用户以&quot;手指在控制缩放&quot;的感觉，缩放和位移常常叠加使用。</p>
+    <p>在dualtouch的事件响应函数中，以下代码即可对一个元素进行缩放：</p>
+    <pre>//假定myele是某一DOM元素
+myele.style.webkitTransform = &quot;translate(&quot; + e.translate + &quot;) &quot;+scale(&quot; + e.scale+ &quot;)&quot;</pre>
+    <p>实际代码中，可能需要使用getComputedStyle来获取元素原本的transform进行叠加，所以通常可以在dualtouchstart事件中做此事。</p>
+    <pre>//假定myele是某一DOM元素
+var matrix;
+
+myele.addEventListener("dualtouchstart",function(e){
+    matrix = window.getComputedStyle(origin).webkitTransform;
+    if(matrix == "none")
+    {
+        origin.style.webkitTransform = "scale(1)";
+        matrix = window.getComputedStyle(origin).webkitTransform;
+    }
+    console.log(matrix);
+},false);
+
+myele.addEventListener("dualtouch",function(e){
+    origin.style.webkitTransform = " scale("+e.scale+&quot;) "+ matrix;
+},false);;
+    </pre>
+    <p>matrix则是表示完整的几何变换。。。。。。。。</p>
+    <p>若将两个触点视为一个有向线段，那么手指移动前后的有向线段可以视为一个相似变换。而scale、rotate、translate则为此相似变换的三个分量。matrix则是三种分量相叠加而得到的矩阵。</p>
+    <pre>//假定myele是某myele.style.webkitTransform = &quot; matrix(&quot;+e.matrix[0][0]+&quot;,&quot;+e.matrix[1][0]+&quot;,&quot;+e.matrix[0][1]+
+    &quot;,&quot;+e.matrix[1][1]+&quot;,&quot;+e.matrix[0][2]+&quot;,&quot;+e.matrix[1][2]+&quot;) &quot;</pre>
+</section>
+    <section id="reference">
+    <h2>函数</h2>
+    <h3><a name="8">函数enableGestureEvents</a></h3>
+    <dl>
+        <dt>参数：</dt>
+    <dd><dl><dt>element</dt><dd>任意一个DOM元素，想要在上面监听手势事件的元素。</dd></dl></dd>
+        <dt>说明：</dt>
+        <dd>enableGestureEvents允许用户在某一元素上使用手势事件。<br />
+            <pre>
+var myele = document.querySelector(&quot;#myele&quot;);
+enableGestureEvents(myele);
+//之后就可以监听ele元素的手势事件了。</pre></dd>
+    </dl>
+    <h2>事件</h2>
+    <h3><a name="9">平移(pan)</a></h3>
+    <dl>
+        <dt>参数：</dt>
+        <dd>
+    <dl>
+        <dt>screenX</dt>
+        <dd>
+            事件发生时手指触屏位置距离屏幕左上角的X方向（水平）距离。</dd>
+        <dt>screenY</dt>
+        <dd>
+            事件发生时手指触屏位置距离屏幕左上角的Y方向（竖直）距离。</dd>
+        <dt>clientX</dt>
+        <dd>
+            事件发生时手指触屏位置距离浏览器网页显示区域左上角的X方向（水平）距离。</dd>
+        <dt>clientY</dt>
+        <dd>
+            事件发生时手指触屏位置距离浏览器网页显示区域左上角的Y方向（竖直）距离。</dd>
+        <dt>pageX</dt>
+        <dd>
+            事件发生时手指触屏位置距离页面左上角的X方向（水平）距离。</dd>
+        <dt>pageY</dt>
+        <dd>
+            事件发生时手指触屏位置距离页面左上角的Y方向（竖直）距离。</dd>
+        <dt>displacementX</dt>
+        <dd>
+            手指相对于起始点的X方向（水平）移动距离</dd>
+        <dt>displacementY</dt>
+        <dd>
+            手指相对于起始点的Y方向（水平）移动距离</dd>
+    </dl>
+        </dd>
+        <dt>触发方式：</dt>
+        <dd>用一根手指在触屏上移动超过10像素的距离。之后的持续移动过程将会产生pan事件。</dd>
+        <dt>示例：</dt>
+        <dd>
+            <a href="./samples/ball-pan.html">./samples/ball-pan.html</a><br />
+            <a href="./samples/pan.html">./samples/pan.html</a></dd>
+    </dl>
+    <p>&nbsp;</p>
+    <h3><a name="10">平移开始(panstart)</a></h3>
+    <dl>
+        <dt>参数：</dt>
+        <dd>
+    <dl>
+        <dt>screenX</dt>
+        <dd>
+            事件发生时手指触屏位置距离屏幕左上角的X方向（水平）距离。</dd>
+        <dt>screenY</dt>
+        <dd>
+            事件发生时手指触屏位置距离屏幕左上角的Y方向（竖直）距离。</dd>
+        <dt>clientX</dt>
+        <dd>
+            事件发生时手指触屏位置距离浏览器网页显示区域左上角的X方向（水平）距离。</dd>
+        <dt>clientY</dt>
+        <dd>
+            事件发生时手指触屏位置距离浏览器网页显示区域左上角的Y方向（竖直）距离。</dd>
+        <dt>pageX</dt>
+        <dd>
+            事件发生时手指触屏位置距离页面左上角的X方向（水平）距离。</dd>
+        <dt>pageY</dt>
+        <dd>
+            事件发生时手指触屏位置距离页面左上角的Y方向（竖直）距离。</dd>
+    </dl>
+        </dd>
+        <dt>触发方式：</dt>
+        <dd>用一根手指在触屏上移动超过10像素的距离，手指离开触屏之前只会触发一次panstart事件。</dd>
+        <dt>示例：</dt>
+        <dd>
+            <a href="./samples/ball-pan.html">./samples/ball-pan.html</a><br />
+            <a href="./samples/pan.html">./samples/pan.html</a></dd>
+    </dl>
+    <h3><a name="11">平移结束(panend)</a></h3>
+    <dl>
+        <dt>参数：</dt>
+        <dd>
+    <dl>
+        <dt>screenX</dt>
+        <dd>
+            事件发生时手指触屏位置距离屏幕左上角的X方向（水平）距离。</dd>
+        <dt>screenY</dt>
+        <dd>
+            事件发生时手指触屏位置距离屏幕左上角的Y方向（竖直）距离。</dd>
+        <dt>clientX</dt>
+        <dd>
+            事件发生时手指触屏位置距离浏览器网页显示区域左上角的X方向（水平）距离。</dd>
+        <dt>clientY</dt>
+        <dd>
+            事件发生时手指触屏位置距离浏览器网页显示区域左上角的Y方向（竖直）距离。</dd>
+        <dt>pageX</dt>
+        <dd>
+            事件发生时手指触屏位置距离页面左上角的X方向（水平）距离。</dd>
+        <dt>pageY</dt>
+        <dd>
+            事件发生时手指触屏位置距离页面左上角的Y方向（竖直）距离。</dd>
+    </dl>
+        </dd>
+        <dt>触发方式：</dt>
+        <dd>用一根手指在触屏上移动超过10像素的距离，持续移动后离开触屏。</dd>
+    </dl>
+    <h3><a name="12">拂动(flick)</a></h3>
+    <dl>
+        <dt>参数：</dt>
+        <dd>
+    <dl>
+        <dt>screenX</dt>
+        <dd>
+            事件发生时手指触屏位置距离屏幕左上角的X方向（水平）距离。</dd>
+        <dt>screenY</dt>
+        <dd>
+            事件发生时手指触屏位置距离屏幕左上角的Y方向（竖直）距离。</dd>
+        <dt>clientX</dt>
+        <dd>
+            事件发生时手指触屏位置距离浏览器网页显示区域左上角的X方向（水平）距离。</dd>
+        <dt>clientY</dt>
+        <dd>
+            事件发生时手指触屏位置距离浏览器网页显示区域左上角的Y方向（竖直）距离。</dd>
+        <dt>pageX</dt>
+        <dd>
+            事件发生时手指触屏位置距离页面左上角的X方向（水平）距离。</dd>
+        <dt>pageY</dt>
+        <dd>
+            事件发生时手指触屏位置距离页面左上角的Y方向（竖直）距离。</dd>
+        <dt>duration</dt>
+        <dd>
+            手指在屏幕上停留的时间。</dd>
+        <dt>valocityX</dt>
+        <dd>
+            手指X方向（水平）移动的速度，单位是 px/ms。</dd>
+        <dt>valocityY</dt>
+        <dd>
+            手指Y方向（竖直）移动的速度，单位是 px/ms。</dd>
+        <dt>displacementX</dt>
+        <dd>
+            手指相对于起始点的X方向（水平）移动距离。</dd>
+        <dt>displacementY</dt>
+        <dd>
+            手指相对于起始点的Y方向（竖直）移动距离。</dd>
+    </dl>
+        </dd>
+        <dt>触发方式：</dt>
+        <dd>用一根手指在触屏上快速移动超过10像素的距离，在0.5秒内离开触屏。</dd>
+        <dt>示例：</dt>
+        <dd>
+            <a href="./samples/flick.html">./samples/flick.html</a><br />
+            <a href="./samples/ball-flick.html">./samples/ball-flick.html</a></dd>
+    </dl>
+    <h3><a name="13">点(tap)</a></h3>
+    <dl>
+        <dt>参数：</dt>
+        <dd>
+    <dl>
+        <dt>screenX</dt>
+        <dd>
+            事件发生时手指触屏位置距离屏幕左上角的X方向（水平）距离。</dd>
+        <dt>screenY</dt>
+        <dd>
+            事件发生时手指触屏位置距离屏幕左上角的Y方向（竖直）距离。</dd>
+        <dt>clientX</dt>
+        <dd>
+            事件发生时手指触屏位置距离浏览器网页显示区域左上角的X方向（水平）距离。</dd>
+        <dt>clientY</dt>
+        <dd>
+            事件发生时手指触屏位置距离浏览器网页显示区域左上角的Y方向（竖直）距离。</dd>
+        <dt>pageX</dt>
+        <dd>
+            事件发生时手指触屏位置距离页面左上角的X方向（水平）距离。</dd>
+        <dt>pageY</dt>
+        <dd>
+            事件发生时手指触屏位置距离页面左上角的Y方向（竖直）距离。</dd>
+    </dl>
+        </dd>
+        <dt>触发方式：</dt>
+        <dd>用一根手指在触屏上快速点击。</dd>
+        <dt>示例：</dt>
+        <dd>
+            <a href="./samples/tap.html">./samples/tap.html</a><br />
+            <a href="./samples/box-tap.html">./samples/box-tap.html</a></dd>
+    </dl>
+    <h3><a name="14">双点击(doubletap)</a></h3>
+    <dl>
+        <dt>参数：</dt>
+        <dd>
+            <dl>
+                
+        <dt>screenX</dt>
+        <dd>
+            事件发生时手指触屏位置距离屏幕左上角的X方向（水平）距离。</dd>
+        <dt>screenY</dt>
+        <dd>
+            事件发生时手指触屏位置距离屏幕左上角的Y方向（竖直）距离。</dd>
+        <dt>clientX</dt>
+        <dd>
+            事件发生时手指触屏位置距离浏览器网页显示区域左上角的X方向（水平）距离。</dd>
+        <dt>clientY</dt>
+        <dd>
+            事件发生时手指触屏位置距离浏览器网页显示区域左上角的Y方向（竖直）距离。</dd>
+        <dt>pageX</dt>
+        <dd>
+            事件发生时手指触屏位置距离页面左上角的X方向（水平）距离。</dd>
+        <dt>pageY</dt>
+        <dd>
+            事件发生时手指触屏位置距离页面左上角的Y方向（竖直）距离。</dd>
+
+        </dd>
+                
+            </dl>
+        </dd>
+        <dt>触发方式：</dt>
+        <dd>用一根手指在触屏上快速连续点击两次。</dd>
+        <dt>示例：</dt>
+        <dd>
+            <a href="./samples/doubletap.html">./samples/doubletap.html</a><br />
+            <a href="./samples/box-doubletap.html">./samples/box-doubletap.html</a></dd>
+    </dl>
+    <h3><a name="15">按(press)</a></h3>
+    <dl>
+        <dt>参数：</dt>
+        <dd>
+        <dl>
+
+        <dt>screenX</dt>
+        <dd>
+            事件发生时手指触屏位置距离屏幕左上角的X方向（水平）距离。</dd>
+        <dt>screenY</dt>
+        <dd>
+            事件发生时手指触屏位置距离屏幕左上角的Y方向（竖直）距离。</dd>
+        <dt>clientX</dt>
+        <dd>
+            事件发生时手指触屏位置距离浏览器网页显示区域左上角的X方向（水平）距离。</dd>
+        <dt>clientY</dt>
+        <dd>
+            事件发生时手指触屏位置距离浏览器网页显示区域左上角的Y方向（竖直）距离。</dd>
+        <dt>pageX</dt>
+        <dd>
+            事件发生时手指触屏位置距离页面左上角的X方向（水平）距离。</dd>
+        <dt>pageY</dt>
+        <dd>
+            事件发生时手指触屏位置距离页面左上角的Y方向（竖直）距离。</dd>
+        </dl>
+        </dd>
+        <dt>触发方式：</dt>
+        <dd>用一根手指在触屏上按住0.5秒以上。</dd>
+        <dt>示例：</dt>
+        <dd>
+            <a href="./samples/press.html">./samples/press.html</a></dd>
+    </dl>
+    <h3><a name="16">按结束(pressend)</a></h3>
+    <dl>
+        <dt>参数：</dt>
+        <dd>
+        <dl>
+    <dl>
+        <dt>screenX</dt>
+        <dd>
+            事件发生时手指触屏位置距离屏幕左上角的X方向（水平）距离。</dd>
+        <dt>screenY</dt>
+        <dd>
+            事件发生时手指触屏位置距离屏幕左上角的Y方向（竖直）距离。</dd>
+        <dt>clientX</dt>
+        <dd>
+            事件发生时手指触屏位置距离浏览器网页显示区域左上角的X方向（水平）距离。</dd>
+        <dt>clientY</dt>
+        <dd>
+            事件发生时手指触屏位置距离浏览器网页显示区域左上角的Y方向（竖直）距离。</dd>
+        <dt>pageX</dt>
+        <dd>
+            事件发生时手指触屏位置距离页面左上角的X方向（水平）距离。</dd>
+        <dt>pageY</dt>
+        <dd>
+            事件发生时手指触屏位置距离页面左上角的Y方向（竖直）距离。</dd>
+    </dl>
+        </dl>
+        </dd>
+        <dt>触发方式：</dt>
+        <dd>用一根手指在触屏上按住0.5秒以上，手指离开触屏。</dd>
+        <dt>示例：</dt>
+        <dd>
+            <a href="./samples/pressend.html">./samples/pressend.html</a></dd>
+    </dl>
+    <h3><a name="17">双指触摸(dualtouch)</a></h3>
+    <dl>
+        <dt>参数：</dt>
+        <dd>
+        <dl>
+            <dt>rotate</dt>
+            <dd>
+                事件发生时两手指之间连线相对于起始状态转过的角度。</dd>
+            <dt>scale</dt>
+            <dd>
+                事件发生时两手指之间连线相对于起始状态的长度比例。</dd>
+            <dt>translate</dt>
+            <dd>
+                事件发生时两手指之中点对于起始状态移动的距离。</dd>
+            <dt>matrix</dt>
+            <dd>
+                两手指触点为起止的向量由起始状态做相似变换到事件发生时的状态所需的矩阵。（常用于transform属性，见示例）</dd>
+            <dt>touches</dt>
+            <dd>
+                事件发生时两手指的触屏位置信息。</dd>
+        </dl>
+        </dd>
+        <dt>触发方式：</dt>
+        <dd>把两根手指放在触屏上滑动。</dd>
+        <dt>示例：</dt>
+        <dd>
+            <a href="./samples/transform.html">./samples/transform.html</a><br />
+            <a href="./samples/zoom.html">./samples/zoom.html</a></dd>
+    </dl>
+    <h3><a name="18">双指触摸开始(dualtouchstart)</a></h3>
+    <dl>
+        <dt>参数：</dt>
+        <dd>
+        <dl>
+        <dt>touches</dt>
+        <dd>
+            事件发生时两手指的触屏位置信息</dd>
+        </dl>
+        </dd>
+        <dt>触发方式：</dt>
+        <dd>把两根手指放在触屏上</dd>
+        <dt>示例：</dt>
+        <dd>
+            <a href="./samples/transform.html">./samples/transform.html</a><br />
+            <a href="./samples/zoom.html">./samples/zoom.html</a></dd>
+    </dl>
+</section>
+      <footer>
+        <p>项目由<a href="https://github.com/SNDA-FE">SNDA-FE</a>维护</p>
+        <p><a href="http://snda.com">上海盛大网络发展有限公司</a> 版权所有</p>
+        <p><small>托管于GitHub Pages &mdash; 模板由<a href="https://github.com/orderedlist">orderedlist</a>提供</small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
