@@ -34,7 +34,6 @@ function enableGestureEvents(ele) {
     
     //gestures on this element
     var myGestures = {};
-    var dualTouch = null;
 
     function onGestureStart(e) {
         if (Object.getOwnPropertyNames(myGestures).length == 0) {
@@ -72,7 +71,6 @@ function enableGestureEvents(ele) {
             ev.initEvent('dualtouchstart', true, true);
             ele.dispatchEvent(ev);
             ev.touches = JSON.parse(JSON.stringify(e.touches));
-            dualtouchstart = true;
         }
     }
 
@@ -152,6 +150,12 @@ function enableGestureEvents(ele) {
     }
 
     function onGestureEnd(e) {
+        if (Object.getOwnPropertyNames(myGestures).length == 2) {
+            var ev = document.createEvent('HTMLEvents');
+            ev.initEvent('dualtouchend', true, true);
+            ev.touches = JSON.parse(JSON.stringify(e.touches));
+            ele.dispatchEvent(ev);
+        }
         for (var i = 0; i < e.changedTouches.length; i++) {
             var gesture = myGestures[e.changedTouches[i].identifier];
             var touch = e.changedTouches[i];
