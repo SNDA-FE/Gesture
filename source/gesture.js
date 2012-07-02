@@ -72,7 +72,7 @@ function enableGestureEvents(ele) {
             ev.initEvent('dualtouchstart', true, true);
             ele.dispatchEvent(ev);
             ev.touches = JSON.parse(JSON.stringify(e.touches));
-            dualtouchstart = true;
+            dualTouch = true;
         }
     }
 
@@ -203,6 +203,12 @@ function enableGestureEvents(ele) {
                     ev[p] = touch[p];
                 });
                 ele.dispatchEvent(ev);
+            }
+            if (dualTouch == true) {
+                var ev = document.createEvent('HTMLEvents');
+                ev.initEvent('dualtouchend', true, true);
+                ele.dispatchEvent(ev);
+                dualTouch = null;
             }
             delete myGestures[e.changedTouches[i].identifier];
         }
