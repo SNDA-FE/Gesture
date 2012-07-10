@@ -71,7 +71,7 @@ function enableGestureEvents(ele) {
             var ev = document.createEvent('HTMLEvents');
             ev.initEvent('dualtouchstart', true, true);
             ele.dispatchEvent(ev);
-            ev.touches = Array.prototype.map.call(e.touches, function () {
+            ev.touches = Array.prototype.map.call(e.touches, function (touch) {
                 var touchRecord = new Object();
                 for (var p in touch)
                     touchRecord[p] = touch[p];
@@ -152,7 +152,7 @@ function enableGestureEvents(ele) {
             ev.translate = transform.translate;
             ev.matrix = transform.matrix;
 
-            ev.touches = Array.prototype.map.call(e.touches, function () {
+            ev.touches = Array.prototype.map.call(e.touches, function (touch) {
                 var touchRecord = new Object();
                 for (var p in touch)
                     touchRecord[p] = touch[p];
