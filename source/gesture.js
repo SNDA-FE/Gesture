@@ -71,7 +71,12 @@ function enableGestureEvents(ele) {
             var ev = document.createEvent('HTMLEvents');
             ev.initEvent('dualtouchstart', true, true);
             ele.dispatchEvent(ev);
-            ev.touches = JSON.parse(JSON.stringify(e.touches));
+            ev.touches = Array.prototype.map.call(e.touches, function () {
+                var touchRecord = new Object();
+                for (var p in touch)
+                    touchRecord[p] = touch[p];
+                return touchRecord;
+            });
             dualtouchstart = true;
         }
     }
@@ -146,7 +151,13 @@ function enableGestureEvents(ele) {
             ev.scale = transform.scale;
             ev.translate = transform.translate;
             ev.matrix = transform.matrix;
-            ev.touches = JSON.parse(JSON.stringify(e.touches));
+
+            ev.touches = Array.prototype.map.call(e.touches, function () {
+                var touchRecord = new Object();
+                for (var p in touch)
+                    touchRecord[p] = touch[p];
+                return touchRecord;
+            });
             ele.dispatchEvent(ev);
         }
     }
