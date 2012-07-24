@@ -239,3 +239,133 @@ function enableGestureEvents(ele) {
         lastTapTime = Date.now();
     }, false);
 }
+
+
+
+function enableMouseGestureEvents(ele) {
+    //mouse gesture
+    var gesture = null;
+    ele.addEventListener("mousedown", onMouseGestureStart, false);
+
+
+    var gestureEventProperties = ["screenX", "screenY", "clientX", "clientY", "pageX", "pageY"];
+    function preventDefault(e) {
+        return e.preventDefault();
+    }
+    function onMouseGestureStart(e) {
+        if (gesture == null) {
+            document.addEventListener("mouseup", onMouseGestureEnd, false);
+            document.addEventListener("mousemove", onMouseGesture, false);
+            document.addEventListener("selectstart", preventDefault, true);
+        }
+        var touch = e;
+        var touchRecord = new Object();
+        for (var p in touch)
+            touchRecord[p] = touch[p];
+        gesture = {
+            startTouch: touchRecord,
+            startTime: Date.now(),
+            status: "tapping",
+            pressingHandler: setTimeout(function () {
+                if (gesture.status == "tapping") {
+                    gesture.status = "pressing";
+                    var ev = document.createEvent('HTMLEvents');
+                    ev.initEvent('press', true, true);
+                    gestureEventProperties.forEach(function (p) {
+                        ev[p] = touchRecord[p];
+                    })
+                    ele.dispatchEvent(ev);
+                }
+
+                gesture.pressingHandler = null;
+            }, 500)
+        };
+    }
+    function onMouseGesture(e) {
+
+        if (!gesture)
+            return;
+
+        var touch = e;
+
+        var displacementX = touch.clientX - gesture.startTouch.clientX;
+        var displacementY = touch.clientY - gesture.startTouch.clientY;
+        var distance = Math.sqrt(Math.pow(displacementX, 2) + Math.pow(displacementY, 2));
+        // magic number 10: moving 10px means pan, not tap
+        if (gesture.status == "tapping" && distance > 10) {
+            gesture.status = "panning";
+            var ev = document.createEvent('HTMLEvents');
+            ev.initEvent('panstart', true, true);
+            gestureEventProperties.forEach(function (p) {
+                ev[p] = touch[p];
+            });
+            ele.dispatchEvent(ev);
+        }
+        if (gesture.status == "panning") {
+            var ev = document.createEvent('HTMLEvents');
+            ev.initEvent('pan', true, true);
+            gestureEventProperties.forEach(function (p) {
+                ev[p] = touch[p];
+            });
+            ev.displacementX = displacementX;
+            ev.displacementY = displacementY;
+            ele.dispatchEvent(ev);
+        }
+    }
+    function onMouseGestureEnd(e) {
+        var touch = e;
+
+        if (gesture.pressingHandler) {
+            clearTimeout(gesture.pressingHandler);
+            gesture.pressingHandler = null;
+        }
+        if (gesture.status == "tapping") {
+            var ev = document.createEvent('HTMLEvents');
+            ev.initEvent('tap', true, true);
+            gestureEventProperties.forEach(function (p) {
+                ev[p] = touch[p];
+            });
+            ele.dispatchEvent(ev);
+        }
+        if (gesture.status == "panning") {
+            var ev = document.createEvent('HTMLEvents');
+            ev.initEvent('panend', true, true);
+            gestureEventProperties.forEach(function (p) {
+                ev[p] = touch[p];
+            });
+            ele.dispatchEvent(ev);
+
+            var duration = Date.now() - gesture.startTime;
+
+            if (duration < 300) {
+                var ev = document.createEvent('HTMLEvents');
+                ev.initEvent('flick', true, true);
+
+                ev.duration = duration;
+                ev.valocityX = (touch.clientX - gesture.startTouch.clientX) / duration;
+                ev.valocityY = (touch.clientY - gesture.startTouch.clientY) / duration;
+                ev.displacementX = touch.clientX - gesture.startTouch.clientX;
+                ev.displacementY = touch.clientY - gesture.startTouch.clientY;
+
+                gestureEventProperties.forEach(function (p) {
+                    ev[p] = touch[p];
+                });
+                ele.dispatchEvent(ev);
+            }
+        }
+        if (gesture.status == "pressing") {
+            var ev = document.createEvent('HTMLEvents');
+            ev.initEvent('pressend', true, true);
+            gestureEventProperties.forEach(function (p) {
+                ev[p] = touch[p];
+            });
+            ele.dispatchEvent(ev);
+        }
+        gesture = null;
+
+        document.removeEventListener("mouseup", onMouseGestureEnd, false);
+        document.removeEventListener("mousemove", onMouseGesture, false);
+        document.removeEventListener("selectstart", preventDefault, true);
+    }
+
+}
