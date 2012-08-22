@@ -163,6 +163,12 @@ function enableGestureEvents(ele) {
     }
 
     function onGestureEnd(e) {
+        if (Object.getOwnPropertyNames(myGestures).length == 2) {
+            var ev = document.createEvent('HTMLEvents');
+            ev.initEvent('dualtouchend', true, true);
+            ev.touches = JSON.parse(JSON.stringify(e.touches));
+            ele.dispatchEvent(ev);
+        }
         for (var i = 0; i < e.changedTouches.length; i++) {
             var gesture = myGestures[e.changedTouches[i].identifier];
             var touch = e.changedTouches[i];
